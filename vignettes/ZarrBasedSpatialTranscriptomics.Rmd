@@ -31,6 +31,54 @@ for the 2024 hackathon in Basel, led by Helena Crowell.
 library(SpatialData)
 library(SpatialData.plot)
 library(SpatialData.data)
+library(patchwork)
 utils::data(demo_spatialdata)
 DT::datatable(demo_spatialdata)
+```
+
+# Example 1: MERFISH
+
+Example datasets are retrieved from
+cloud storage as needed and
+cached locally.  For persistent
+use, a `target` parameter can be used,
+which will be populated with a Zarr store.
+
+## Acquisition and persistence; folder layout
+
+```{r getmer,message=FALSE}
+targ = file.path(tempfile(), "mbmer")
+mb = MouseBrainMERFISH(target = targ)
+mb
+```
+
+To continue working with the MERFISH archive,
+refer to contents of `targ`:
+```{r lkta}
+dir(targ)
+dir(file.path(targ, "merfish.zarr"))
+```
+
+The folders seen there are the basic components
+of the OME-NGFF/Zarr representation of
+a Spatial Omics experiment.  One additional folder
+is typically present: "labels".
+
+## Exhibiting the image
+
+By default, the raw image is displayed at the coarsest
+level of resolution.
+```{r lkim}
+plotSpatialData() + plotImage(mb)
+```
+
+## Visualizing the cells and annotation
+
+There are two types of shape recorded in the data:
+a partitioning of the plane into anatomical
+layers, and (circular) segmentation of individual cells.
+```{r dosh}
+plotSpatialData() + plotShape(mb) + ggtitle("anatomy") | 
+  plotSpatialData() + plotShape(mb) + 
+     plotShape(mb,2, c="gray") + ggtitle("cells and anatomy")
 ```
