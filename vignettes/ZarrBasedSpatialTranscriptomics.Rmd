@@ -1,0 +1,36 @@
+---
+title: "Zarr-based spatial transcriptomics overview"
+author: "Vincent J. Carey, stvjc at channing.harvard.edu"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+vignette: >
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{Zarr-based spatial transcriptomics overview}
+  %\VignetteEncoding{UTF-8}
+output:
+  BiocStyle::html_document:
+    highlight: pygments
+    number_sections: yes
+    theme: united
+    toc: yes
+---
+
+# Introduction
+
+The Open Microscopy Environment "next-generation file format"
+initiative [(OME-NGFF)](https://ngff.openmicroscopy.org/) has driven
+substantial software development in the [scverse community](https://spatialdata.scverse.org/en/stable/).
+This vignette describes R-based software being developed to convey
+spatial omics solutions to investigators using NHGRI AnVIL.
+
+# Package facts
+
+We will use two packages being developed by a team assembled
+for the 2024 hackathon in Basel, led by Helena Crowell.
+
+```{r lkpacks,message=FALSE}
+library(SpatialData)
+library(SpatialData.plot)
+library(SpatialData.data)
+utils::data(demo_spatialdata)
+DT::datatable(demo_spatialdata)
+```
