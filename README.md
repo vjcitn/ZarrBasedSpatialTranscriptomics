@@ -13,7 +13,7 @@ packages via `BiocManager::install("vjcitn/SpatialData", ref="datamart")`
 
 As of December 2024 we have the following resources for investigation:
 
-![](man/figures/scrshot.png)
+![](https://github.com/vjcitn/ZarrBasedSpatialTranscriptomics/blob/main/man/figures/scrshot.png?raw=true)
 
 That table can be produced with
 ```

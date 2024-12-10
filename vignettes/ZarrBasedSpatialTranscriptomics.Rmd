@@ -32,6 +32,8 @@ library(SpatialData)
 library(SpatialData.plot)
 library(SpatialData.data)
 library(patchwork)
+library(ggplot2)
+library(sf)
 utils::data(demo_spatialdata)
 DT::datatable(demo_spatialdata)
 ```
@@ -72,6 +74,23 @@ level of resolution.
 plotSpatialData() + plotImage(mb)
 ```
 
+## Cells and their coordinates
+
+In this assay, cells are described by
+a circle with given center and radius.
+```{r lkloc}
+shape(mb,2)@data |> sf::st_as_sf()
+```
+
+Coordinates for different components of the spatial data can require
+transformation to be located or viewed together.
+```{r lkcg}
+plotCoordGraph(CTgraph(mb))
+```
+Here we see that there would need to be a transformation from
+the rasterized image shown with plotImage, to bring it to the
+global coordinates shared by all other modes.
+
 ## Visualizing the cells and annotation
 
 There are two types of shape recorded in the data:
@@ -81,4 +100,43 @@ layers, and (circular) segmentation of individual cells.
 plotSpatialData() + plotShape(mb) + ggtitle("anatomy") | 
   plotSpatialData() + plotShape(mb) + 
      plotShape(mb,2, c="gray") + ggtitle("cells and anatomy")
+```
+
+## Transcripts and their locations
+
+```{r lksh}
+shape(mb,2)@data |> sf::st_as_sf()
+```
+
+## Quantifications of transcript abundance in cells
+
+This experiment has measurements for 268 molecular
+features.
+
+```{r lkta2}
+SpatialData::table(mb)
+```
+
+# Example 2: Breast cancer Xenium
+
+
+## Acquisition
+
+```{r lkbr1}
+jbr1 = JanesickBreastXeniumRep1()
+jbr1
+```
+
+## Cells and their coordinates
+
+```{r lkbrc}
+shape(jbr1)@data |> sf::st_as_sf()
+```
+
+The simple features representation lends itself
+to rapid sketching of cell boundaries:
+
+```{r lkxen}
+cc = shape(jbr1)@data |> st_as_sf() |> tail(50000)
+plotSpatialData() + geom_sf(data=cc)
 ```
