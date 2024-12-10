@@ -93,13 +93,8 @@
 <h3 id="acquisition-and-persistence-folder-layout">Acquisition and persistence; folder layout<a class="anchor" aria-label="anchor" href="#acquisition-and-persistence-folder-layout"></a>
 </h3>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">targ</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"mbmer"</span><span class="op">)</span></span>
-<span><span class="va">mb</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/SpatialData.data/man/MouseBrainMERFISH.html" class="external-link">MouseBrainMERFISH</a></span><span class="op">(</span>target <span class="op">=</span> <span class="va">targ</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Warning in dir.create(td): cannot create dir</span></span>
-<span><span class="co">## '/var/folders/n4/p9th81md60s8nv12yv40sv8m0000gp/T//RtmprDA37Y/file2c61d6448b0/mbmer',</span></span>
-<span><span class="co">## reason 'No such file or directory'</span></span></code></pre>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">mb</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">mb</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/SpatialData.data/man/MouseBrainMERFISH.html" class="external-link">MouseBrainMERFISH</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">mb</span></span></code></pre></div>
 <pre><code><span><span class="co">## class: SpatialData</span></span>
 <span><span class="co">## - images(1):</span></span>
 <span><span class="co">##   - rasterized (1,522,575)</span></span>
@@ -113,20 +108,13 @@
 <span><span class="co">##   - table (268,2389)</span></span>
 <span><span class="co">## coordinate systems:</span></span>
 <span><span class="co">## - global(4): rasterized anatomical cells single_molecule</span></span></code></pre>
-<p>To continue working with the MERFISH archive, refer to contents of <code>targ</code>:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">dir</a></span><span class="op">(</span><span class="va">targ</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] "merfish.zarr"</span></span></code></pre>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">dir</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">targ</span>, <span class="st">"merfish.zarr"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] "images"    "points"    "shapes"    "tables"    "zmetadata"</span></span></code></pre>
-<p>The folders seen there are the basic components of the OME-NGFF/Zarr representation of a Spatial Omics experiment. One additional folder is typically present: “labels”.</p>
+<p>To continue working with the MERFISH archive, set the <code>target</code> parameter in <code>MouseBrainMERFISH</code> and then use <code>readSpatialData</code>.</p>
 </div>
 <div class="section level3">
 <h3 id="exhibiting-the-image">Exhibiting the image<a class="anchor" aria-label="anchor" href="#exhibiting-the-image"></a>
 </h3>
 <p>By default, the raw image is displayed at the coarsest level of resolution.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/SpatialData.plot/man/plotImage.html" class="external-link">plotSpatialData</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/pkg/SpatialData.plot/man/plotImage.html" class="external-link">plotImage</a></span><span class="op">(</span><span class="va">mb</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Scale for <span style="color: #00BB00;">y</span> is already present.</span></span>
 <span><span class="co">## Adding another scale for <span style="color: #00BB00;">y</span>, which will replace the existing scale.</span></span></code></pre>
@@ -136,7 +124,7 @@
 <h3 id="cells-and-their-coordinates">Cells and their coordinates<a class="anchor" aria-label="anchor" href="#cells-and-their-coordinates"></a>
 </h3>
 <p>In this assay, cells are described by a circle with given center and radius.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/SpatialData/man/SpatialData.html" class="external-link">shape</a></span><span class="op">(</span><span class="va">mb</span>,<span class="fl">2</span><span class="op">)</span><span class="op">@</span><span class="va">data</span> <span class="op">|&gt;</span> <span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_as_sf.html" class="external-link">st_as_sf</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Simple feature collection with 2389 features and 2 fields</span></span>
 <span><span class="co">## Geometry type: POINT</span></span>
@@ -156,15 +144,16 @@
 <span><span class="co">## 9  10.104508       8 POINT (1193.963 6186.483)</span></span>
 <span><span class="co">## 10  7.866349       9 POINT (1197.113 6076.683)</span></span></code></pre>
 <p>Coordinates for different components of the spatial data can require transformation to be located or viewed together.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/SpatialData/man/plotCoordGraph.html" class="external-link">plotCoordGraph</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/SpatialData/man/coord-utils.html" class="external-link">CTgraph</a></span><span class="op">(</span><span class="va">mb</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="ZarrBasedSpatialTranscriptomics_files/figure-html/lkcg-1.png" width="700"> Here we see that there would need to be a transformation from the rasterized image shown with plotImage, to bring it to the global coordinates shared by all other modes.</p>
+<p><img src="ZarrBasedSpatialTranscriptomics_files/figure-html/lkcg-1.png" width="700"></p>
+<p>Here we see that there would need to be a transformation from the rasterized image shown with plotImage, to bring it to the global coordinates shared by all other modes.</p>
 </div>
 <div class="section level3">
 <h3 id="visualizing-the-cells-and-annotation">Visualizing the cells and annotation<a class="anchor" aria-label="anchor" href="#visualizing-the-cells-and-annotation"></a>
 </h3>
 <p>There are two types of shape recorded in the data: a partitioning of the plane into anatomical layers, and (circular) segmentation of individual cells.</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/SpatialData.plot/man/plotImage.html" class="external-link">plotSpatialData</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/pkg/SpatialData.plot/man/plotShape.html" class="external-link">plotShape</a></span><span class="op">(</span><span class="va">mb</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"anatomy"</span><span class="op">)</span> <span class="op">|</span> </span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/SpatialData.plot/man/plotImage.html" class="external-link">plotSpatialData</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/pkg/SpatialData.plot/man/plotShape.html" class="external-link">plotShape</a></span><span class="op">(</span><span class="va">mb</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>     <span class="fu"><a href="https://rdrr.io/pkg/SpatialData.plot/man/plotShape.html" class="external-link">plotShape</a></span><span class="op">(</span><span class="va">mb</span>,<span class="fl">2</span>, c<span class="op">=</span><span class="st">"gray"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"cells and anatomy"</span><span class="op">)</span></span></code></pre></div>
@@ -173,7 +162,7 @@
 <div class="section level3">
 <h3 id="transcripts-and-their-locations">Transcripts and their locations<a class="anchor" aria-label="anchor" href="#transcripts-and-their-locations"></a>
 </h3>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/SpatialData/man/SpatialData.html" class="external-link">shape</a></span><span class="op">(</span><span class="va">mb</span>,<span class="fl">2</span><span class="op">)</span><span class="op">@</span><span class="va">data</span> <span class="op">|&gt;</span> <span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_as_sf.html" class="external-link">st_as_sf</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Simple feature collection with 2389 features and 2 fields</span></span>
 <span><span class="co">## Geometry type: POINT</span></span>
@@ -197,7 +186,7 @@
 <h3 id="quantifications-of-transcript-abundance-in-cells">Quantifications of transcript abundance in cells<a class="anchor" aria-label="anchor" href="#quantifications-of-transcript-abundance-in-cells"></a>
 </h3>
 <p>This experiment has measurements for 268 molecular features.</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">SpatialData</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/SpatialData/man/SpatialData.html" class="external-link">table</a></span><span class="op">(</span><span class="va">mb</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## class: SingleCellExperiment </span></span>
 <span><span class="co">## dim: 268 2389 </span></span>
@@ -218,7 +207,7 @@
 <div class="section level3">
 <h3 id="acquisition">Acquisition<a class="anchor" aria-label="anchor" href="#acquisition"></a>
 </h3>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">jbr1</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/SpatialData.data/man/JanesickBreastXeniumRep1.html" class="external-link">JanesickBreastXeniumRep1</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">jbr1</span></span></code></pre></div>
 <pre><code><span><span class="co">## class: SpatialData</span></span>
@@ -242,7 +231,7 @@
 <div class="section level3">
 <h3 id="cells-and-their-coordinates-1">Cells and their coordinates<a class="anchor" aria-label="anchor" href="#cells-and-their-coordinates-1"></a>
 </h3>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/SpatialData/man/SpatialData.html" class="external-link">shape</a></span><span class="op">(</span><span class="va">jbr1</span><span class="op">)</span><span class="op">@</span><span class="va">data</span> <span class="op">|&gt;</span> <span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_as_sf.html" class="external-link">st_as_sf</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Simple feature collection with 167780 features and 1 field</span></span>
 <span><span class="co">## Geometry type: POLYGON</span></span>
@@ -262,7 +251,7 @@
 <span><span class="co">## 9        9 POLYGON ((844.6875 339.575,...</span></span>
 <span><span class="co">## 10      10 POLYGON ((840.0125 338.9375...</span></span></code></pre>
 <p>The simple features representation lends itself to rapid sketching of cell boundaries:</p>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">cc</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/SpatialData/man/SpatialData.html" class="external-link">shape</a></span><span class="op">(</span><span class="va">jbr1</span><span class="op">)</span><span class="op">@</span><span class="va">data</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_as_sf.html" class="external-link">st_as_sf</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">tail</a></span><span class="op">(</span><span class="fl">50000</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/SpatialData.plot/man/plotImage.html" class="external-link">plotSpatialData</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span>data<span class="op">=</span><span class="va">cc</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Coordinate system already present. Adding new coordinate system, which will</span></span>

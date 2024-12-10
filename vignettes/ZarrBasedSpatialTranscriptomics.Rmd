@@ -49,22 +49,15 @@ which will be populated with a Zarr store.
 ## Acquisition and persistence; folder layout
 
 ```{r getmer,message=FALSE}
-targ = file.path(tempfile(), "mbmer")
-mb = MouseBrainMERFISH(target = targ)
+mb = MouseBrainMERFISH()
 mb
 ```
 
 To continue working with the MERFISH archive,
-refer to contents of `targ`:
-```{r lkta}
-dir(targ)
-dir(file.path(targ, "merfish.zarr"))
-```
+set the `target` parameter in `MouseBrainMERFISH`
+and then
+use `readSpatialData`.
 
-The folders seen there are the basic components
-of the OME-NGFF/Zarr representation of
-a Spatial Omics experiment.  One additional folder
-is typically present: "labels".
 
 ## Exhibiting the image
 
@@ -84,9 +77,11 @@ shape(mb,2)@data |> sf::st_as_sf()
 
 Coordinates for different components of the spatial data can require
 transformation to be located or viewed together.
+
 ```{r lkcg}
 plotCoordGraph(CTgraph(mb))
 ```
+
 Here we see that there would need to be a transformation from
 the rasterized image shown with plotImage, to bring it to the
 global coordinates shared by all other modes.
